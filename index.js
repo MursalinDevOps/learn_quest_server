@@ -33,31 +33,28 @@ async function run() {
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
-    // 
-    const database = client.db("learnQuestDB")
+    //
+    const database = client.db("learnQuestDB");
     const usersCollection = database.collection("users");
 
     // users related API's
     app.post("/users", async (req, res) => {
       try {
         const user = req.body;
+        const query = { email: user.email };
+        const existingUser = await usersCollection.findOne(query);
+        if (existingUser) {
+          return res.send({
+            message: "user already exists on the DB",
+            insertedId: null,
+          });
+        }
         const result = await usersCollection.insertOne(user);
         res.send(result);
       } catch (err) {
-        res.send({ error: 'Failed to insert user' });
+        res.send({ error: "Failed to insert user" });
       }
     });
-
-
-
-
-
-
-
-
-
-
-
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
