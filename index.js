@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const app = express();
-const port = process.env.PORT || 5002;
+const port = process.env.PORT || 5000;
 
 // middlewares
 app.use(express.json());
@@ -33,6 +33,31 @@ async function run() {
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
+    // 
+    const database = client.db("learnQuestDB")
+    const usersCollection = database.collection("users");
+
+    // users related API's
+    app.post("/users", async (req, res) => {
+      try {
+        const user = req.body;
+        const result = await usersCollection.insertOne(user);
+        res.send(result);
+      } catch (err) {
+        res.send({ error: 'Failed to insert user' });
+      }
+    });
+
+
+
+
+
+
+
+
+
+
+
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
