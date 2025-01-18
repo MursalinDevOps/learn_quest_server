@@ -36,8 +36,11 @@ async function run() {
     //
     const database = client.db("learnQuestDB");
     const usersCollection = database.collection("users");
+    const classesCollection = database.collection("classes")
 
-    // users related API's
+    // USERS RELATED API's
+
+        // Endpoint to create a new user
     app.post("/users", async (req, res) => {
       try {
         const user = req.body;
@@ -55,12 +58,22 @@ async function run() {
         res.send({ error: "Failed to insert user" });
       }
     });
-    
+
     // Endpoint to create api for all users
     app.get("/users", async (req, res) => {
       const result = await usersCollection.find().toArray();
       res.send(result);
     });
+
+
+    // CLASS RELATED API's
+
+    // Endpoint to create a new class
+    app.post("/classes", async(req, res)=>{
+      const newClass = req.body;
+      const result = await classesCollection.insertOne(newClass);
+      res.send(result);
+    })
 
 
   } finally {
