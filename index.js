@@ -71,9 +71,16 @@ async function run() {
     // Endpoint to create a new class
     app.post("/classes", async(req, res)=>{
       const newClass = req.body;
+      // console.log(newClass)
       const result = await classesCollection.insertOne(newClass);
       res.send(result);
     })
+
+     // Endpoint to create api for all classes
+     app.get("/classes", async(req, res)=>{
+      const result = await classesCollection.find().toArray();
+      res.send(result)
+     })
 
 
   } finally {
