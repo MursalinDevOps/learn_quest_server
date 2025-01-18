@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -36,11 +36,11 @@ async function run() {
     //
     const database = client.db("learnQuestDB");
     const usersCollection = database.collection("users");
-    const classesCollection = database.collection("classes")
+    const classesCollection = database.collection("classes");
 
     // USERS RELATED API's
 
-        // Endpoint to create a new user
+    // Endpoint to create a new user
     app.post("/users", async (req, res) => {
       try {
         const user = req.body;
@@ -65,24 +65,28 @@ async function run() {
       res.send(result);
     });
 
-
     // CLASS RELATED API's
 
     // Endpoint to create a new class
-    app.post("/classes", async(req, res)=>{
+    app.post("/classes", async (req, res) => {
       const newClass = req.body;
       // console.log(newClass)
       const result = await classesCollection.insertOne(newClass);
       res.send(result);
-    })
+    });
 
-     // Endpoint to create api for all classes
-     app.get("/classes", async(req, res)=>{
+    // Endpoint to create api for all classes
+    app.get("/classes", async (req, res) => {
       const result = await classesCollection.find().toArray();
-      res.send(result)
-     })
-
-
+      res.send(result);
+    });
+    // Endpoint to create api to find single class by id
+    app.get("/class/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await classesCollection.findOne(query);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
