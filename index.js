@@ -55,6 +55,14 @@ async function run() {
         res.send({ error: "Failed to insert user" });
       }
     });
+    
+    // Endpoint to create api for all users
+    app.get("/users", async (req, res) => {
+      const result = await usersCollection.find().toArray();
+      res.send(result);
+    });
+
+
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
