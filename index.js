@@ -88,6 +88,13 @@ async function run() {
       const result = await classesCollection.findOne(query);
       res.send(result);
     });
+    // Endpoint to create api to find single class by email
+    app.get("/my-class/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email};
+      const result = await classesCollection.find(query).toArray();
+      res.send(result);
+    });
 
     // APPLICATION RELATED API's
 
