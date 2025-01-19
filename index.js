@@ -97,6 +97,12 @@ async function run() {
       const result = await applicationsCollection.insertOne(newJobApplication);
       res.send(result);
     });
+    // Endpoint to create api for all applications
+    app.get('/applications', async(req, res)=>{
+      const result = await applicationsCollection.find().toArray();
+      res.send(result);
+    });
+
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
