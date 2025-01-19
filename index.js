@@ -100,9 +100,25 @@ async function run() {
     app.delete("/class/:id", async(req, res)=>{
       const id = req.params.id;
       const query = {_id : new ObjectId(id)};
-      const result = await usersCollection.deleteOne(query);
+      const result = await classesCollection.deleteOne(query);
       res.send(result);
     })
+
+
+    // Endpoint to update a class from classes collection
+
+    app.put("/class/:id", async (req, res) => {
+      const { id } = req.params;
+      const updatedClass = req.body;
+      const query = { _id: new ObjectId(id) };
+      const updatedItem = {
+        $set: updatedClass,
+      };
+      const result = await classesCollection.updateOne(query, updatedItem);
+      res.send(result);
+    });
+
+
 
     // APPLICATION RELATED API's
 
