@@ -96,6 +96,14 @@ async function run() {
       res.send(result);
     });
 
+    // Endpoint to delete a class from classes collection
+    app.delete("/class/:id", async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)};
+      const result = await usersCollection.deleteOne(query);
+      res.send(result);
+    })
+
     // APPLICATION RELATED API's
 
     // Endpoint to create a new job applications
