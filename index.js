@@ -37,6 +37,7 @@ async function run() {
     const database = client.db("learnQuestDB");
     const usersCollection = database.collection("users");
     const classesCollection = database.collection("classes");
+    const applicationsCollection = database.collection("applications");
 
     // USERS RELATED API's
 
@@ -85,6 +86,15 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await classesCollection.findOne(query);
+      res.send(result);
+    });
+
+    // APPLICATION RELATED API's
+
+    // Endpoint to create a new job applications
+    app.post("/applications", async (req, res) => {
+      const newJobApplication = req.body;
+      const result = await applicationsCollection.insertOne(newJobApplication);
       res.send(result);
     });
   } finally {
