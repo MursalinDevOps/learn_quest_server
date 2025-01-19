@@ -65,6 +65,13 @@ async function run() {
       const result = await usersCollection.find().toArray();
       res.send(result);
     });
+    // Endpoint to create api to find single user by id
+    app.get("/user/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await usersCollection.findOne(query);
+      res.send(result);
+    });
 
     // CLASS RELATED API's
 
@@ -91,19 +98,18 @@ async function run() {
     // Endpoint to create api to find single class by email
     app.get("/my-class/:email", async (req, res) => {
       const email = req.params.email;
-      const query = { email: email};
+      const query = { email: email };
       const result = await classesCollection.find(query).toArray();
       res.send(result);
     });
 
     // Endpoint to delete a class from classes collection
-    app.delete("/class/:id", async(req, res)=>{
+    app.delete("/class/:id", async (req, res) => {
       const id = req.params.id;
-      const query = {_id : new ObjectId(id)};
+      const query = { _id: new ObjectId(id) };
       const result = await classesCollection.deleteOne(query);
       res.send(result);
-    })
-
+    });
 
     // Endpoint to update a class from classes collection
 
@@ -118,8 +124,6 @@ async function run() {
       res.send(result);
     });
 
-
-
     // APPLICATION RELATED API's
 
     // Endpoint to create a new job applications
@@ -129,11 +133,10 @@ async function run() {
       res.send(result);
     });
     // Endpoint to create api for all applications
-    app.get('/applications', async(req, res)=>{
+    app.get("/applications", async (req, res) => {
       const result = await applicationsCollection.find().toArray();
       res.send(result);
     });
-
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
