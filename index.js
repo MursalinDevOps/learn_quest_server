@@ -113,7 +113,6 @@ async function run() {
       const result = await classesCollection.updateOne(query, updatedStatus);
       res.send(result);
     });
-    
 
     // Endpoint to create api to find single class by id
     app.get("/class/:id", async (req, res) => {
@@ -162,6 +161,21 @@ async function run() {
     // Endpoint to create api for all applications
     app.get("/applications", async (req, res) => {
       const result = await applicationsCollection.find().toArray();
+      res.send(result);
+    });
+
+    // Endpoint to update a user's application status
+    app.patch("/applications/:id/status", async (req, res) => {
+      const { id } = req.params;
+      const { status } = req.body;
+      const query = { _id: new ObjectId(id) };
+      const updatedStatus = {
+        $set: { status },
+      };
+      const result = await applicationsCollection.updateOne(
+        query,
+        updatedStatus
+      );
       res.send(result);
     });
   } finally {
