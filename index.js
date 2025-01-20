@@ -88,6 +88,20 @@ async function run() {
       const result = await classesCollection.find().toArray();
       res.send(result);
     });
+    // Endpoint to update a class's status
+    app.patch('/classes/:id/status', async (req, res) => {
+      const { id } = req.params;
+      const { status } = req.body;
+      // console.log("ID:",id,"STATUS:",status)
+      const query = {_id: new ObjectId(id)};
+      const updatedStatus = {
+        $set: {status}
+      }
+      const result = await classesCollection.updateOne(query, updatedStatus);
+      res.send(result)
+    })
+
+
     // Endpoint to create api to find single class by id
     app.get("/class/:id", async (req, res) => {
       const id = req.params.id;
