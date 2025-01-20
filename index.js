@@ -73,6 +73,19 @@ async function run() {
       res.send(result);
     });
 
+    // Endpoint to update an user's role
+    app.patch("/users/:id/role", async (req, res) => {
+      const { id } = req.params;
+      const { role } = req.body;
+      // console.log("ID:",id,"STATUS:",status)
+      const query = { _id: new ObjectId(id) };
+      const updatedRole = {
+        $set: { role },
+      };
+      const result = await usersCollection.updateOne(query, updatedRole);
+      res.send(result);
+    });
+
     // CLASS RELATED API's
 
     // Endpoint to create a new class
@@ -89,18 +102,18 @@ async function run() {
       res.send(result);
     });
     // Endpoint to update a class's status
-    app.patch('/classes/:id/status', async (req, res) => {
+    app.patch("/classes/:id/status", async (req, res) => {
       const { id } = req.params;
       const { status } = req.body;
       // console.log("ID:",id,"STATUS:",status)
-      const query = {_id: new ObjectId(id)};
+      const query = { _id: new ObjectId(id) };
       const updatedStatus = {
-        $set: {status}
-      }
+        $set: { status },
+      };
       const result = await classesCollection.updateOne(query, updatedStatus);
-      res.send(result)
-    })
-
+      res.send(result);
+    });
+    
 
     // Endpoint to create api to find single class by id
     app.get("/class/:id", async (req, res) => {
